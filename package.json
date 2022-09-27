@@ -1,13 +1,19 @@
 {
   "name": "express-weblog",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Simple website",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemoon index.js"
+    "start": "node app",
+    "dev": "nodemon app"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Mobin Barmar",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.23.2"
+  }
 }
