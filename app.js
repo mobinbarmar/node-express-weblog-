@@ -4,6 +4,7 @@ const path = require('path');
 //* External Modules
 const express = require('express');
 const dotEnv = require('dotenv');
+const morgan = require('morgan');
 
 //* My Modules
 const indexRoutes = require('./routes/index');
@@ -12,6 +13,11 @@ const indexRoutes = require('./routes/index');
 dotEnv.config({ path: './config/config.env' })
 
 const app = express()
+
+//* Logging
+if(process.env.NODE_ENV = 'development'){
+    app.use(morgan('dev'))
+}
 
 
 //* View Engine
@@ -27,8 +33,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(indexRoutes)
 
 
-const PORT = process.env.PORT || 3000
 
+
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}  \n{in ${process.env.NODE_ENV} mode!}`);
 })
