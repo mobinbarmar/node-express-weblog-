@@ -7,10 +7,14 @@ const dotEnv = require('dotenv');
 const morgan = require('morgan');
 
 //* My Modules
+const connectDB = require('./config/db');
 const indexRoutes = require('./routes/index');
 
 //*Load config
 dotEnv.config({ path: './config/config.env' })
+
+//*Database cconnection
+connectDB()
 
 const app = express()
 
