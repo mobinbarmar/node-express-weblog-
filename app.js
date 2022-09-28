@@ -48,6 +48,10 @@ app.use('/' ,require('./routes/blog'))
 app.use('/users', require('./routes/users'))
 app.use('/dashboard', require('./routes/dashboard'))
 
+//* 404
+app.use((req, res) => {
+    res.render('404', {pageTitle: '404', path: '/404'})
+})
 
 
 

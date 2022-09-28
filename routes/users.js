@@ -1,14 +1,38 @@
 const express = require('express');
-const Yup = require('yup');
+const Validator = require('fastest-validator');
 
 const router = express.Router()
+const v = new Validator()
 
-const schema = Yup.object().shape({
-    fullname: Yup.string().required('نام و نام خانوادگی الزامی میباشد').min(4, 'بیش از 4 کارکتر وارد کنید').max(255, 'کمتر از 255 کارکتر موردنیاز است'),
-    email: Yup.string().email('ایمیل معتبر نمیباشد').required('ایمیل الزامی میباشد'),
-    password: Yup.string().min(4, 'بیش از 4 کارکتر وارد کنید').max(255, 'کمتر از 255 کارکتر موردنیاز است').required('پسورد الزامی میباشد'),
-    confirmPassword: Yup.string().required('پسورد الزامی میباشد').oneOf([Yup.ref('password'), null])
-})
+const schema = {
+    fullname: {
+        type: 'string',
+        trim: true,
+        min: 4,
+        max: 255,
+        messages: {
+            required: 'نام و نام خانوادگی الزامی میباشد',
+        }
+    },
+    email: {
+        type: 'email',
+        normalize: true,
+        messages: {
+            requried: 'ایمیل الزامی میباشد'
+        }
+    },
+    password: {
+        type: 'string',
+        min: 4,
+        max: 255
+    },
+    confirmPassword: {
+        type: 'string',
+        min: 4,
+        max: 255
+    }
+}
+
 
 //* Login Page
 router.get('/login', (req, res) => {
@@ -22,11 +46,27 @@ router.get('/register', (req, res) => {
 
 //* register Handle
 router.post('/register', (req, res) => {
-    schema.validate(req.body).then(() => {
+    const validate = v.validate(req.body, schema)
+    const errorArr = []
+    if(validate === true){
+        const { fullname, email, password, confirmPassword } = req.body
+        if(password != confirmPassword){
+            errorArr.push({ message: 'کلمه های عبور یکسان نیستن' })
+
+            return res.render('register',{
+                pageTitle: 'ثبت نام',
+                path: '/register',
+                errors: errorArr
+            })
+        }
         res.redirect('/users/login')
-    }).catch((err) => {
-        res.render('register', {pageTitle:'ثبت نام', path: '/register', errors: err.errors})
-    })
+    }else{
+        res.render('register', {
+            pageTitle: 'ثبت نام',
+            path: '/register',
+            errors: validate
+        })
+    }
 })
 
 module.exports = router
