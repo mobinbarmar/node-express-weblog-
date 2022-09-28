@@ -12,10 +12,7 @@ router.get('/', (req, res) => {
     })
 })
 
-//* Login Page
-router.get('/login', (req, res) => {
-    res.render('login', {pageTitle: 'ورود', path: '/login'})
-})
+
 
 
 
