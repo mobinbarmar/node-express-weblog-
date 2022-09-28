@@ -17,6 +17,8 @@ dotEnv.config({ path: './config/config.env' })
 
 //*Database cconnection
 connectDB()
+connectDB().sync()
+
 
 const app = express()
 
