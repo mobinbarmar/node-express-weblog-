@@ -1,37 +1,8 @@
 const express = require('express');
-const Validator = require('fastest-validator');
+
+const userModel = require('../models/user.model');
 
 const router = express.Router()
-const v = new Validator()
-
-const schema = {
-    fullname: {
-        type: 'string',
-        trim: true,
-        min: 4,
-        max: 255,
-        messages: {
-            required: 'نام و نام خانوادگی الزامی میباشد',
-        }
-    },
-    email: {
-        type: 'email',
-        normalize: true,
-        messages: {
-            requried: 'ایمیل الزامی میباشد'
-        }
-    },
-    password: {
-        type: 'string',
-        min: 4,
-        max: 255
-    },
-    confirmPassword: {
-        type: 'string',
-        min: 4,
-        max: 255
-    }
-}
 
 
 //* Login Page
@@ -45,26 +16,25 @@ router.get('/register', (req, res) => {
 })
 
 //* register Handle
-router.post('/register', (req, res) => {
-    const validate = v.validate(req.body, schema)
-    const errorArr = []
-    if(validate === true){
-        const { fullname, email, password, confirmPassword } = req.body
-        if(password != confirmPassword){
-            errorArr.push({ message: 'کلمه های عبور یکسان نیستن' })
-
-            return res.render('register',{
-                pageTitle: 'ثبت نام',
-                path: '/register',
-                errors: errorArr
-            })
-        }
+router.post('/register', async (req, res) => {
+    try {
+        // await userModel.create(req.body)
         res.redirect('/users/login')
-    }else{
-        res.render('register', {
-            pageTitle: 'ثبت نام',
+
+    } catch (err) {
+        console.log(err);
+        const errors = []
+        err.inner.forEach( e => {
+            errors.push({
+                name: e.path,
+                message: e.message
+            })
+        })
+
+        return res.render('register', {
+            pageTitle: 'ثبت نام کاربر',
             path: '/register',
-            errors: validate
+            errors
         })
     }
 })

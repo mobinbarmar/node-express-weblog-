@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 const seq = require('../config/db');
 
 
-const UserSchema = seq().define('UserSchema', {
+const userSchema = seq().define('UserSchema', {
     fullname:{
         type: DataTypes.STRING,
         allowNull: false,
@@ -25,4 +25,5 @@ const UserSchema = seq().define('UserSchema', {
     }
 })
 
-module.exports = UserSchema
+
+module.exports = userSchema
