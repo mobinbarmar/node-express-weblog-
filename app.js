@@ -9,7 +9,8 @@ const expressLayout = require('express-ejs-layouts');
 
 //* My Modules
 const connectDB = require('./config/db');
-const indexRoutes = require('./routes/index');
+const blogRoutes = require('./routes/blog');
+const dashRoutes = require('./routes/dashboard');
 
 //*Load config
 dotEnv.config({ path: './config/config.env' })
@@ -36,10 +37,12 @@ app.set('views', 'views')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, process.env.BOOTSTRAP)))
 app.use(express.static(path.join(__dirname, process.env.FONTAWESOME)))
+app.use(express.static(path.join(__dirname, process.env.JQUERY)))
 
 
 //* Routes
-app.use(indexRoutes)
+app.use('/dashboard', dashRoutes)
+app.use(blogRoutes)
 
 
 
