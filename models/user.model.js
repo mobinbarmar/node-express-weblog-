@@ -4,6 +4,11 @@ const seq = require('../config/db');
 
 
 const userSchema = seq().define('UserSchema', {
+    id: {
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true
+    },
     fullname:{
         type: DataTypes.STRING,
         allowNull: false,
